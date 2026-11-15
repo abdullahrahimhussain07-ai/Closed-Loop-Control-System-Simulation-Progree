@@ -4,7 +4,7 @@ import numpy as np
 optuna.logging.set_verbosity(optuna.logging.WARNING)
 
 def evaluate_pid_performance(kp, ki, kd):
-    'Simulates the warehouse robot response with given PID gains and returns the cost.'
+    'Simulates the warehouse robot response with saturation and error handling.'
     dt = 0.05
     steps = 200
     setpoint = 1.0
@@ -18,7 +18,13 @@ def evaluate_pid_performance(kp, ki, kd):
         error = setpoint - current_value
         integral += error * dt
         derivative = (error - previous_error) / dt
+        
+        # Raw PID output
         output = (kp * error) + (ki * integral) + (kd * derivative)
+        
+        # Output Saturation / Clamping to prevent overflow
+        output = max(-50.0, min(50.0, output))
+        
         current_value += output * 0.1
         error_sum += abs(error) * dt
         control_effort += (output ** 2) * dt
@@ -30,7 +36,10 @@ def objective(trial):
     kp = trial.suggest_float('kp', 0.1, 10.0)
     ki = trial.suggest_float('ki', 0.0, 1.0)
     kd = trial.suggest_float('kd', 0.0, 5.0)
-    return evaluate_pid_performance(kp, ki, kd)
+    try:
+        return evaluate_pid_performance(kp, ki, kd)
+    except Exception:
+        return 1e6  # Return high penalty cost if unstable
 
 if __name__ == '__main__':
     print('--- Starting Bayesian Hyperparameter Optimization for PID Gains ---')
