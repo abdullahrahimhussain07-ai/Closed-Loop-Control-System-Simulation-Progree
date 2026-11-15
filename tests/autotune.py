@@ -5,7 +5,7 @@ import numpy as np
 optuna.logging.set_verbosity(optuna.logging.WARNING)
 
 def evaluate_pid_performance(kp, ki, kd):
-    ""Simulates the warehouse robot response with given PID gains and returns the cost (RMSE/ITAE).""
+    'Simulates the warehouse robot response with given PID gains and returns the cost (RMSE/ITAE).'
     dt = 0.05
     steps = 200
     setpoint = 1.0
@@ -45,15 +45,15 @@ def objective(trial):
     return cost
 
 if __name__ == '__main__':
-    print(""--- Starting Bayesian Hyperparameter Optimization for PID Gains ---"")
+    print('--- Starting Bayesian Hyperparameter Optimization for PID Gains ---')
     
     # Run Optuna study to find optimal gains
     study = optuna.create_study(direction='minimize')
     study.optimize(objective, n_trials=50)
     
-    print(""\n[SUCCESS] Optimization Complete!"")
-    print(f""Optimal Gains Found:"")
-    print(f""  Kp: {study.best_params['kp']:.4f}"")
-    print(f""  Ki: {study.best_params['ki']:.4f}"")
-    print(f""  Kd: {study.best_params['kd']:.4f}"")
-    print(f""  Best Cost: {study.best_value:.4f}"")
+    print('\n[SUCCESS] Optimization Complete!')
+    print(f'Optimal Gains Found:')
+    print(f'  Kp: {study.best_params[\'kp\']:.4f}')
+    print(f'  Ki: {study.best_params[\'ki\']:.4f}')
+    print(f'  Kd: {study.best_params[\'kd\']:.4f}')
+    print(f'  Best Cost: {study.best_value:.4f}')
