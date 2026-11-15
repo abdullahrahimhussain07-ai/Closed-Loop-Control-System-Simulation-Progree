@@ -16,9 +16,8 @@ An industrial-grade **Closed-Loop Control System Simulation** engineered in Pyth
 4. Performance Benchmarks
 5. Repository Architecture
 6. Installation & Quickstart
-7. Configuration Parameters
-8. Internship Roadmap
-9. Author
+7. Internship Roadmap
+8. Author
 
 ---
 
