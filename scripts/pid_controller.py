@@ -27,7 +27,6 @@ class PIDController:
         return output
 
 if __name__ == "__main__":
-    pid = PIDController(kp=0.5, ki=0.01, dg=0.1) # stable gains for test
     pid = PIDController(kp=0.6, ki=0.05, kd=0.1)
     setpoint = 0.0
     current_value = 5.0  # Initial offset error
@@ -35,10 +34,6 @@ if __name__ == "__main__":
     print("Starting Stable PID Simulation Test...")
     for step in range(10):
         control_output = pid.update(setpoint, current_value)
-        
-        # Corrected plant simulation model: 
-        # Moving current value towards the setpoint based on control output
         current_value += control_output * 0.2
-        
         print(f"Step {step+1}: Error = {setpoint - current_value:.2f}, Output = {control_output:.2f}")
         time.sleep(0.1)
